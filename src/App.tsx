@@ -4,7 +4,7 @@ import Results from "./pages/Results";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <div className="l-App">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/*" element={<Navigate to="/" />} />
