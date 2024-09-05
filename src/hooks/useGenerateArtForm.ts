@@ -4,13 +4,25 @@ import { useState } from "react";
 // Models
 import { ArtRequestForm, artRequestFormDefault } from "../models/ArtRequestForm";
 
-const useGenerateArtForm = () => {
+type UseGenerateArtForm = () => {
+    handleChange: (e: React.ChangeEvent<any>, promptIndex?: number) => void;
+    formData: ArtRequestForm;
+    setFormData: React.Dispatch<React.SetStateAction<ArtRequestForm>>;
+};
+
+const useGenerateArtForm: UseGenerateArtForm = () => {
     const [formData, setFormData] = useState<ArtRequestForm>(artRequestFormDefault);
 
     const handleChange = (e: any, promptIndex: number = 0) => {
-        const { name, value } = e.target;
-        console.log(name, ": ", value);
+        let { name, value } = e.target;
+        /* const promptInputRegex = /^[A-Za-z\s]+$/; */ // Enables letters only input.
+        console.log(name, value, typeof value);
 
+        if (name.startsWith("prompt")) {
+            name = "prompt"
+        } else if (name.startsWith("style")) {
+            name = "style"
+        }
 
         switch (name) {
             case "bulkAmount":
@@ -20,13 +32,25 @@ const useGenerateArtForm = () => {
                 });
                 break;
 
-            /* case "prompt":
-                const promptKey = formData.prompts[promptIndex].prompt;
+            case "prompt":
+            case "style":
+                /* (value === "" || promptInputRegex.test(value)) && */ // Enables letters only input.
                 setFormData({
                     ...formData,
-                    [promptKey]: value
+                    prompts: formData.prompts.map((prompt, index) =>
+                        index === promptIndex
+                            ? { ...prompt, [name]: value }
+                            : prompt
+                    ),
                 });
-                break; */
+                break;
+
+            case "deletePrompt":
+                setFormData({
+                    ...formData,
+                    prompts: formData.prompts.filter((_, index) => index !== promptIndex)
+                });
+                break;
 
             default:
                 setFormData({
@@ -39,12 +63,9 @@ const useGenerateArtForm = () => {
     };
 
     return {
-        // Funcs
         handleChange,
-
-        // States
         formData, setFormData,
     }
 }
 
-export default useGenerateArtForm
+export default useGenerateArtForm;

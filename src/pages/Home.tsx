@@ -11,17 +11,24 @@ import { artRequestFormDefault } from "../models/ArtRequestForm";
 const Home: React.FC = () => {
     const { formData, setFormData, handleChange } = useGenerateArtForm();
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
+    const addNewPromptSet = () => {
+        setFormData({
+            ...formData,
+            prompts: [...formData.prompts, artRequestFormDefault.prompts[0]]
+        })
+    }
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
         console.log("Submitted: ", formData);
     };
+
     useEffect(() => {
-        if (formData.production) {
-            setFormData({
-                ...formData,
-                bulkAmount: artRequestFormDefault.bulkAmount
-            });
-        }
+        setFormData({
+            ...formData,
+            bulkAmount: artRequestFormDefault.bulkAmount,
+            prompts: [formData.prompts[0]]
+        });
     }, [formData.production]);
 
     return (
@@ -89,39 +96,47 @@ const Home: React.FC = () => {
 
                 <h5>Prompt Area</h5>
                 <div>
-                    <Form.Field className="FormField" name="prompt" onChange={(e) => handleChange(e, 0)}>
-                        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                            <Form.Message className="FormMessage" match="valueMissing">
-                                Please enter a prompt.
-                            </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                            <textarea
-                                required
-                                value={formData.prompts[0].prompt}
-                                className="Textarea"
-                                placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
-                            />
-                        </Form.Control>
-                    </Form.Field>
-                    <Form.Field className="FormField" name="style" onChange={(e) => handleChange(e, 0)}>
-                        <Form.Control asChild>
-                            <input
-                                type="text"
-                                value={formData.prompts[0].style}
-                                className="Input"
-                                pattern="[A-Za-z\s]+$"
-                                placeholder="Style (Optional)"
-                            />
-                        </Form.Control>
-                    </Form.Field>
+                    {
+                        formData.prompts.map((prompt, promptIndex) => (
+                            <div key={promptIndex}>
+                                {
+                                    promptIndex !== 0 &&
+                                    <button type="button" name="deletePrompt" onClick={(e) => handleChange(e, promptIndex)}>delete</button>
+                                }
+                                <Form.Field className="FormField" name={`prompt-${promptIndex}`} onChange={(e) => handleChange(e, promptIndex)}>
+                                    <Form.Message className="FormMessage" match="valueMissing">
+                                        Please enter a prompt.
+                                    </Form.Message>
+                                    <br />
+                                    <Form.Control asChild>
+                                        <textarea
+                                            required
+                                            value={prompt.prompt}
+                                            className="Textarea"
+                                            placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
+                                        />
+                                    </Form.Control>
+                                </Form.Field>
+                                <Form.Field className="FormField" name={`style-${promptIndex}`} onChange={(e) => handleChange(e, promptIndex)}>
+                                    <Form.Control asChild>
+                                        <input
+                                            type="text"
+                                            value={prompt.style}
+                                            className="Input"
+                                            placeholder="Style (Optional)"
+                                        />
+                                    </Form.Control>
+                                </Form.Field>
+                            </div>
+                        ))
+                    }
+
                 </div>
 
                 {
                     formData.production === "queue" &&
-                    <button>+Add Prompt to Queue</button>
+                    <button type="button" onClick={addNewPromptSet}>+Add Prompt to Queue</button>
                 }
-
                 <Form.Submit>
                     Submit
                 </Form.Submit>
