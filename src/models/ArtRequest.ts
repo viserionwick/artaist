@@ -1,4 +1,4 @@
-export interface ImageRequest {
+export interface ArtRequest {
     uid: string,
     prompt: string,
     style: string,
