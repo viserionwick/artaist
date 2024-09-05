@@ -1,6 +1,6 @@
 export interface ArtRequest {
-    uid: string,
-    prompt: string,
-    style: string,
-    model: "zappy" | "masterpiece"
+    uid: string;
+    prompt: string;
+    style: string;
+    model: "zappy" | "masterpiece";
 }
