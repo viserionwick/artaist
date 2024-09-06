@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useResultsContext } from "../context/Results";
 
 // Hooks
-import useGenerateArtForm from "../hooks/useGenerateArtForm";
+import useArtRequestForm from "../hooks/useArtRequestForm";
 
 // Models
 import { artRequestFormDefault } from "../models/ArtRequestForm";
@@ -17,7 +17,7 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as Slider from "@radix-ui/react-slider";
 
 const Home: React.FC = () => {
-    const { formData, setFormData, handleChange } = useGenerateArtForm();
+    const { formData, setFormData, handleChange } = useArtRequestForm();
     const { setArtRequestForm } = useResultsContext();
     const goTo = useNavigate();
 

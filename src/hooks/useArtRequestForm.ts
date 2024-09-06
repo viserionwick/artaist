@@ -4,19 +4,18 @@ import { useState } from "react";
 // Models
 import { ArtRequestForm, artRequestFormDefault } from "../models/ArtRequestForm";
 
-type UseGenerateArtForm = () => {
+type UseArtRequestForm = () => {
     handleChange: (e: React.ChangeEvent<any>, promptIndex?: number) => void;
     formData: ArtRequestForm;
     setFormData: React.Dispatch<React.SetStateAction<ArtRequestForm>>;
 };
 
-const useGenerateArtForm: UseGenerateArtForm = () => {
+const useArtRequestForm: UseArtRequestForm = () => {
     const [formData, setFormData] = useState<ArtRequestForm>(artRequestFormDefault);
 
     const handleChange = (e: any, promptIndex: number = 0) => {
         let { name, value } = e.target;
         /* const promptInputRegex = /^[A-Za-z\s]+$/; */ // Enables letters only input.
-        console.log(name, value, typeof value);
 
         if (name.startsWith("prompt")) {
             name = "prompt"
@@ -59,7 +58,6 @@ const useGenerateArtForm: UseGenerateArtForm = () => {
                 });
                 break;
         }
-
     };
 
     return {
@@ -68,4 +66,4 @@ const useGenerateArtForm: UseGenerateArtForm = () => {
     }
 }
 
-export default useGenerateArtForm;
+export default useArtRequestForm;
