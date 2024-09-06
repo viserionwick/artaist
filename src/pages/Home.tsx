@@ -1,15 +1,31 @@
+// Essentials
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Contexts
+import { useResultsContext } from "../context/Results";
+
 // Hooks
 import useGenerateArtForm from "../hooks/useGenerateArtForm";
+
+// Models
+import { artRequestFormDefault } from "../models/ArtRequestForm";
 
 // Components: UI
 import * as Form from "@radix-ui/react-form";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as Slider from "@radix-ui/react-slider";
-import { useEffect } from "react";
-import { artRequestFormDefault } from "../models/ArtRequestForm";
 
 const Home: React.FC = () => {
     const { formData, setFormData, handleChange } = useGenerateArtForm();
+    const { setArtRequestForm } = useResultsContext();
+    const goTo = useNavigate();
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        setArtRequestForm(formData);
+        goTo("/results");
+    };
 
     const addNewPromptSet = () => {
         setFormData({
@@ -17,11 +33,6 @@ const Home: React.FC = () => {
             prompts: [...formData.prompts, artRequestFormDefault.prompts[0]]
         })
     }
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        console.log("Submitted: ", formData);
-    };
 
     useEffect(() => {
         setFormData({
