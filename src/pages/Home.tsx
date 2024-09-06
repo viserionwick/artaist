@@ -1,6 +1,6 @@
 // Essentials
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Contexts
 import { useResultsContext } from "../context/Results";
@@ -20,20 +20,14 @@ const Home: React.FC = () => {
     const { formData, setFormData, handleChange } = useArtRequestForm();
     const { setArtRequestForm } = useResultsContext();
     const goTo = useNavigate();
+    const location = useLocation();
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        setArtRequestForm(formData);
-        goTo("/results");
-    };
+    // Default the states on navigation.
+    useEffect(() => {
+        setArtRequestForm(null);
+    }, [location]);
 
-    const addNewPromptSet = () => {
-        setFormData({
-            ...formData,
-            prompts: [...formData.prompts, artRequestFormDefault.prompts[0]]
-        })
-    }
-
+    // Default the prompts and bulk amount on production switch.
     useEffect(() => {
         setFormData({
             ...formData,
@@ -41,6 +35,21 @@ const Home: React.FC = () => {
             prompts: [formData.prompts[0]]
         });
     }, [formData.production]);
+
+    // Add new prompt.
+    const addNewPromptSet = () => {
+        setFormData({
+            ...formData,
+            prompts: [...formData.prompts, artRequestFormDefault.prompts[0]]
+        })
+    }
+
+    // Handle submission.
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        setArtRequestForm(formData);
+        goTo("/results");
+    };
 
     return (
         <div className="p-Home">

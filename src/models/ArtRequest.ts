@@ -4,3 +4,10 @@ export interface ArtRequest {
     style: string;
     model: "zappy" | "masterpiece";
 }
+
+export const artRequestDefault: ArtRequest = {
+    uid: "sinanpolat",
+    prompt: "",
+    style: "",
+    model: "zappy"
+}

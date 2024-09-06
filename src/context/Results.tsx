@@ -13,14 +13,14 @@ const ResultsContext = createContext<ResultsContextType | undefined>(undefined);
 const useResultsContext = () => {
     const context = useContext(ResultsContext);
     if (!context) {
-        throw new Error("useResultsContext cannot be used outside of ResultsProvider.");
+        throw new Error("'useResultsContext' cannot be used outside of 'ResultsProvider'.");
     }
     return context;
 };
 
 const ResultsProvider = ({ children }: { children: React.ReactNode }) => {
     const [artRequestForm, setArtRequestForm] = useState<ArtRequestForm | null>(null);
-
+    
     const value = {
         artRequestForm, setArtRequestForm
     }
