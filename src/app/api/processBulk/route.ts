@@ -11,14 +11,14 @@ import { ArtResponse } from "@/models/ArtResponse";
 import { dummyImages } from "@/app/results/dummyImages";
 import { nextErrorReturner } from "@/utils/errorReturner";
 
-interface ProcessBulk {
+type ProcessBulkData = {
     artRequest: ArtRequest,
     bulkAmount: ArtRequestForm["bulkAmount"]
 }
 
 export const POST = async (req: Request) => {
     try {
-        const { artRequest, bulkAmount }: ProcessBulk = await req.json();
+        const { artRequest, bulkAmount }: ProcessBulkData = await req.json();
 
         if (!artRequest) throw createHttpError(400, "Request form is required.", { headers: { from: "process_bulk", key: "required" } });
         if (!artRequest.uid) throw createHttpError(403, "Prompt uid is required.", { headers: { from: "process_bulk", key: "required" } });
