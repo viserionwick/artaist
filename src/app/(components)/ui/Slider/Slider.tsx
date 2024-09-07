@@ -16,7 +16,7 @@ const Slider: React.FC<SliderProps> = ({ className, name, defaultValue, onChange
     return (
         <Form.Field name={name} onChange={onChange}>
             <RadixSlider.Root
-                className={`SliderRoot ${className}`}
+                className={`SliderRoot ${className ? className : ""}`}
                 name={name}
                 defaultValue={defaultValue}
                 min={min}

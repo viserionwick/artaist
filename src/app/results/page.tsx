@@ -4,6 +4,7 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // Contexts
 import { useResultsContext } from "../(contexts)/Results";
@@ -14,26 +15,33 @@ import { ArtRequestForm } from "../../models/ArtRequestForm";
 import { ArtResponse } from "../../models/ArtResponse";
 import errorReturner from "@/utils/errorReturner";
 
+// Components: UI
+import Button from "../(components)/ui/Button/Button";
+
 /* import { dummyImages } from "./dummyImages"; */
 
 const Results: NextPage = () => {
     const { artRequestForm } = useResultsContext();
     const [images, setImages] = useState<ArtResponse[]>([]);
+    const [imageSelected, setImageSelected] = useState<any>();
+    const router = useRouter();
 
     useEffect(() => {
         if (artRequestForm) {
-            document.cookie = "artRequestForm=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
             if (artRequestForm.production === "queue" || artRequestForm.production === "bulk") {
                 proccessRequest(artRequestForm);
             }
         }
     }, [artRequestForm]);
 
-    /* useEffect(() => {
-        console.log("images: ", images);
-    }, [images]); */
+    useEffect(() => {
+        if (images.length) {
+            setImageSelected(images[0])
+        }
+    }, [images]);
 
     const proccessRequest = async (artRequestForm: ArtRequestForm) => {
+        document.cookie = "artRequestForm=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
         const formPrompts = artRequestForm.prompts;
 
         // Populate the images state with prompt results.
@@ -46,11 +54,12 @@ const Results: NextPage = () => {
                     ...newImages,
                     {
                         prompt: prompt.prompt,
+                        style: prompt.style,
                         loading: true
                     }
                 ]
             });
-            setImages(newImages); /* console.log("newImages: ", newImages); */
+            setImages(newImages);
 
             // Populate the images state with data.
             for (let i = 0; i < formPrompts.length; i++) {
@@ -106,18 +115,44 @@ const Results: NextPage = () => {
             console.error("Something went wrong:", error);
         }
     }
-    
     return (
         <div className="p-Results">
-            Results
-            {
-                images.map((image, imageIndex) => (
-                    image.loading
-                        ? <div key={imageIndex}>loading {imageIndex}</div>
-                        : <div key={imageIndex}>{image.prompt} | {image.id} {/* <img src={`data:image/jpeg;base64,${image.b64}`} /> */} | {imageIndex}</div>
+            <div >
+                {
+                    images.length && (
+                        <div className="p-Results__images">
+                            {
+                                images.map((image: any, index: any) => (
+                                    image.loading ?
+                                        <div key={index} className="p-Results__image loading" />
+                                        :
+                                        <div key={index} className="p-Results__image"
+                                            onClick={() => setImageSelected(image)}>
+                                            <img src={`data:image/jpeg;base64,${image.b64}`} />
+                                        </div>
+                                ))
+                            }
+                        </div>
+                    )
+                }
 
-                ))
-            }
+                <div className="p-Results__details">
+                    <div className="wrapper">
+                        <h1 className="headline">Prompt</h1>
+                        <div className="text">
+                            {imageSelected?.prompt}
+                        </div>
+                    </div>
+                    <div className="wrapper">
+                        <h1 className="headline">Style</h1>
+                        <div className="text">
+                            {imageSelected?.style}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <Button onClick={() => (router.push("/"))} className="main">Close</Button>
         </div>
     )
 }

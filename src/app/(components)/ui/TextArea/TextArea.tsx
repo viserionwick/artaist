@@ -18,14 +18,13 @@ const TextArea: React.FC<TextAreaProps> = ({ className, name, required, placehol
                     <Form.Message className="FormMessage" match="valueMissing">
                         {valueMissing}
                     </Form.Message>
-                    <br />
                 </>
             }
             <Form.Control asChild>
                 <textarea
                     required={required}
                     value={value}
-                    className={`Textarea ${className}`}
+                    className={`Textarea ${className ? className : ""}`}
                     placeholder={placeholder}
                 />
             </Form.Control>

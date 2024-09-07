@@ -51,7 +51,7 @@ export const POST = async (req: Request) => {
             return NextResponse.json(artResponses); */
 
             await new Promise(resolve => setTimeout(resolve, 200));
-            return NextResponse.json(dummyImages);
+            return NextResponse.json(Array(bulkAmount).fill(dummyImages[0]));
         } else { // Single request.
             /* const response = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
 

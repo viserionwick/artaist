@@ -25,7 +25,7 @@ const TextField: React.FC<TextFieldProps> = ({ className, name, required, placeh
                 <input
                     required={required}
                     value={value}
-                    className={`Textarea ${className}`}
+                    className={`Textfield ${className ? className : ""}`}
                     placeholder={placeholder}
                 />
             </Form.Control>

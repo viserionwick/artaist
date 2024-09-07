@@ -1,0 +1,18 @@
+// IMPORTS: Components
+@import "./(components)/ui/all.scss";
+
+// IMPORTS: Pages
+@import "./page.scss";
+@import "./results/page.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  outline: none;
+}
+
+body {
+  color: #ffffff;
+  background-color: #1b1a21;
+}

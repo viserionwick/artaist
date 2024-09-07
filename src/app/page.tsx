@@ -18,10 +18,11 @@ import { artRequestFormDefault } from "../models/ArtRequestForm";
 import * as Form from "@radix-ui/react-form";
 import RadioButtons from "./(components)/ui/Radio/RadioButtons";
 import RadioButton from "./(components)/ui/Radio/RadioButton";
-import Slider from "./(components)/ui/Slider";
-import TextArea from "./(components)/ui/TextArea";
-import TextField from "./(components)/ui/TextField";
-import Button from "./(components)/ui/Button";
+import Slider from "./(components)/ui/Slider/Slider";
+import TextArea from "./(components)/ui/TextArea/TextArea";
+import TextField from "./(components)/ui/TextField/TextField";
+import Button from "./(components)/ui/Button/Button";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const { formData, setFormData, handleChange } = useArtRequestForm();
@@ -67,83 +68,98 @@ const Home: NextPage = () => {
 
   return (
     <div className="p-Home">
-      <Form.Root onSubmit={handleSubmit}>
-        <h5>AI Model</h5>
-        <RadioButtons name="model" defaultValue="zappy" onChange={handleChange}>
-          <RadioButton value="zappy" id="model_zappy">
-            Zappy
-          </RadioButton>
-          <RadioButton value="masterpiece" id="model_masterpiece">
-            Masterpiece
-          </RadioButton>
-        </RadioButtons>
-
-        <h5>Production Type</h5>
-        <RadioButtons name="production" defaultValue="bulk" onChange={handleChange}>
-          <RadioButton value="bulk" id="production_bulk">
-            Bulk Generation
-          </RadioButton>
-          <RadioButton value="queue" id="production_queue">
-            Queue Generation
-          </RadioButton>
-        </RadioButtons>
-
-        {
-          formData.production === "bulk" && <>
-            <h5>Number of Production</h5>
-            <Slider
-              name="bulkAmount"
-              onChange={handleChange}
-              defaultValue={[artRequestFormDefault.bulkAmount]}
-              min={0}
-              max={10}
-              step={5}
-            />
-            <div>
-              1 | 5 | 10
-            </div>
-          </>
-        }
-
-        <h5>Prompt Area</h5>
-        <div>
-          {
-            formData.prompts.map((prompt, promptIndex) => (
-              <div key={promptIndex}>
-                {
-                  promptIndex !== 0 &&
-                  <Button name="deletePrompt" onClick={(e) => handleChange(e, promptIndex)}>
-                    Delete
-                  </Button>
-                }
-
-                <TextArea
-                  name={`prompt-${promptIndex}`}
-                  required
-                  placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
-                  valueMissing="Please enter a prompt."
-                  value={prompt.prompt}
-                  onChange={(e) => handleChange(e, promptIndex)}
-                />
-                <TextField
-                  name={`style-${promptIndex}`}
-                  placeholder="Style (Optional)"
-                  value={prompt.style}
-                  onChange={(e) => handleChange(e, promptIndex)}
-                />
-              </div>
-            ))
-          }
-
+      <div className="p-Home__logo">
+        <Image src="/logo.png" alt="logo" layout="fill" objectFit="contain" />
+      </div>
+      <Form.Root onSubmit={handleSubmit} className="p-Home__form">
+        <div className="p-Home__formSection">
+          <h5 className="p-Home__headline">AI Model</h5>
+          <RadioButtons name="model" defaultValue="zappy" onChange={handleChange}>
+            <RadioButton value="zappy" id="model_zappy">
+              Zappy
+            </RadioButton>
+            <RadioButton value="masterpiece" id="model_masterpiece">
+              Masterpiece
+            </RadioButton>
+          </RadioButtons>
         </div>
 
-        {
-          formData.production === "queue" &&
-          <Button onClick={addNewPromptSet}>+Add Prompt to Queue</Button>
-        }
-        <Form.Submit>
-          Submit
-        </Form.Submit>
+        <div className="p-Home__formSection">
+          <h5 className="p-Home__headline">Production Type</h5>
+          <RadioButtons name="production" defaultValue="bulk" onChange={handleChange}>
+            <RadioButton value="bulk" id="production_bulk">
+              Bulk Generation
+            </RadioButton>
+            <RadioButton value="queue" id="production_queue">
+              Queue Generation
+            </RadioButton>
+          </RadioButtons>
+        </div>
+
+
+        <div className="p-Home__formSection">
+          {
+            formData.production === "bulk" && <>
+              <h5 className="p-Home__headline">Number of Production</h5>
+              <Slider
+                name="bulkAmount"
+                className="p-Home__bulkAmount"
+                onChange={handleChange}
+                defaultValue={[artRequestFormDefault.bulkAmount]}
+                min={0}
+                max={10}
+                step={5}
+              />
+              <div className="p-Home__bulkAmount-labels">
+                <span>1</span>
+                <span>5</span>
+                <span>10</span>
+              </div>
+            </>
+          }
+        </div>
+
+        <div className="p-Home__formSection">
+          <h5 className="p-Home__headline">Prompt Area</h5>
+          <div className="p-Home__promptSets">
+            {
+              formData.prompts.map((prompt, promptIndex) => (
+                <div key={promptIndex} className="p-Home__promptSet">
+                  <TextArea
+                    name={`prompt-${promptIndex}`}
+                    required
+                    placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
+                    valueMissing="Please enter a prompt."
+                    value={prompt.prompt}
+                    onChange={(e) => handleChange(e, promptIndex)}
+                  />
+                  <TextField
+                    name={`style-${promptIndex}`}
+                    placeholder="Style (optional)"
+                    value={prompt.style}
+                    onChange={(e) => handleChange(e, promptIndex)}
+                  />
+
+                  {
+                    promptIndex !== 0 &&
+                    <Button name="deletePrompt" className="remove" onClick={(e) => handleChange(e, promptIndex)}>
+                      Remove
+                    </Button>
+                  }
+                </div>
+              ))
+            }
+          </div>
+
+          {
+            formData.production === "queue" &&
+            <Button onClick={addNewPromptSet} className="add">+Add Prompt to Queue</Button>
+          }
+        </div>
+
+
+
+        <Button type="submit" className="main">Generate</Button>
       </Form.Root>
     </div>
   )
