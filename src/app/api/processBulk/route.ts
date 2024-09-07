@@ -35,7 +35,7 @@ export async function POST(req: Request) {
             // Send requests in parallel.
             const limit = pLimit(1); // Disable for parallel production.
             const requests = artRequests.map((artRequest: ArtRequest) => (
-                limit(() => axios.post(publicEnv.ARTAIST_API, artRequest))
+                limit(() => axios.post(publicEnv.ARTAIST_API!, artRequest))
             ));
 
             const imageResponses = await Promise.all(requests);
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
             /* await new Promise(resolve => setTimeout(resolve, 10000));
             return NextResponse.json(Array(bulkAmount).fill(dummyImages[0])); */
         } else { // Single request.
-            const response = await axios.post(publicEnv.ARTAIST_API, artRequest);
+            const response = await axios.post(publicEnv.ARTAIST_API!, artRequest);
 
             imageData = {
                 ...response.data,

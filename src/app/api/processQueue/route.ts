@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         if (!artRequest) throw createHttpError(400, "Request form is required.", { headers: { from: "process_queue", key: "required" } });
         if (!artRequest.uid || !artRequest.model || !artRequest.prompt) throw createHttpError(403, "Prompt params ('uid', 'model', 'prompt') is required.", { headers: { from: "process_queue", key: "required" } });
 
-        const imageResponse = await axios.post(publicEnv.ARTAIST_API, artRequest);
+        const imageResponse = await axios.post(publicEnv.ARTAIST_API!, artRequest);
         const imageData: ArtResponse = imageResponse.data;
 
         // For dummy testing.
