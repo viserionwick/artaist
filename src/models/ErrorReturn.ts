@@ -1,10 +1,16 @@
 export default interface ErrorReturn {
     status: number | null,
     message: string | null,
-    headers: {
+    headers?: {
         from: string | null,
         key: string | null,
     }
+    response?: {
+        data: {
+            error: string
+        }
+    }
+    code?: string,
 }
 
 export const errorReturnDefault: ErrorReturn = {

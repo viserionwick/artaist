@@ -34,9 +34,7 @@ export const POST = async (req: Request) => {
             // Send requests in parallel.
             const limit = pLimit(1); // Disable for parallel production.
             const requests = artRequests.map((artRequest: ArtRequest) => (
-                limit
-                ? limit(() => axios.post("https://api.artaistapp.com/generate/v2", artRequest))
-                : axios.post("https://api.artaistapp.com/generate/v2", artRequest)
+                limit(() => axios.post("https://api.artaistapp.com/generate/v2", artRequest))
             ));
 
             const imageResponses = await Promise.all(requests);
