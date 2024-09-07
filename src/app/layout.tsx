@@ -1,21 +1,15 @@
+// Essentials
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
 
-const geistSans = localFont({
-  src: "../../public/fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "../../public/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+// Contexts
+import { ResultsProvider } from "@/app/(contexts)/Results";
+
+// Styles
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Artaist | Generate AI Art",
-  description: "Generate multiple different AI art pieces.",
+  description: "Generate multiple AI art pieces.",
   icons: {
     icon: "./favicon.ico"
   }
@@ -28,8 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body>
+        <ResultsProvider>
+          {children}
+        </ResultsProvider>
       </body>
     </html>
   );
