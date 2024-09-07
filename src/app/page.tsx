@@ -4,7 +4,6 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/navigation";
-/* import { useLocation, useNavigate } from "react-router-dom"; */
 
 // Contexts
 import { useResultsContext } from "./(contexts)/Results";

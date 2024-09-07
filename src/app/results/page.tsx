@@ -4,7 +4,6 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image";
 
 // Contexts
 import { useResultsContext } from "../(contexts)/Results";
@@ -13,8 +12,9 @@ import { useResultsContext } from "../(contexts)/Results";
 import { artRequestDefault } from "../../models/ArtRequest";
 import { ArtRequestForm } from "../../models/ArtRequestForm";
 import { ArtResponse } from "../../models/ArtResponse";
+import errorReturner from "@/utils/errorReturner";
 
-import { dummyImages } from "./dummyImages";
+/* import { dummyImages } from "./dummyImages"; */
 
 const Results: NextPage = () => {
     const { artRequestForm } = useResultsContext();
@@ -29,9 +29,9 @@ const Results: NextPage = () => {
         }
     }, [artRequestForm]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("images: ", images);
-    }, [images]);
+    }, [images]); */
 
     const proccessRequest = async (artRequestForm: ArtRequestForm) => {
         const formPrompts = artRequestForm.prompts;
@@ -50,10 +50,7 @@ const Results: NextPage = () => {
                     }
                 ]
             });
-            setImages(newImages);
-
-            console.log("newImages: ", newImages);
-
+            setImages(newImages); /* console.log("newImages: ", newImages); */
 
             // Populate the images state with data.
             for (let i = 0; i < formPrompts.length; i++) {
@@ -88,7 +85,6 @@ const Results: NextPage = () => {
                                 ));
                         })
                     } else if (artRequestForm.production === "bulk") {
-
                         // Set bulk loading state.
                         if (artRequestForm.bulkAmount > 1) {
                             newImages = Array(artRequestForm.bulkAmount).fill({
@@ -101,19 +97,16 @@ const Results: NextPage = () => {
                         const response = await axios.post("/api/processBulk", { artRequest, bulkAmount: artRequestForm.bulkAmount });
                         const responseData: ArtResponse[] = response.data;
 
-                        if (responseData?.length) setImages(responseData);
+                        responseData?.length && setImages(responseData);
                     }
-
-
                 }
             }
-        } catch (error) {
-            console.error("Unexpected error:", error);
+        } catch (originalError) {
+            const error = errorReturner(originalError);
+            console.error("Something went wrong:", error);
         }
-
     }
-
-
+    
     return (
         <div className="p-Results">
             Results

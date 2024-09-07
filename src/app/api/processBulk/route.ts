@@ -1,5 +1,6 @@
 // Essentials
 import { NextResponse } from "next/server";
+import createHttpError from "http-errors";
 import axios from "axios";
 import pLimit from "p-limit";
 
@@ -8,6 +9,7 @@ import { ArtRequest } from "@/models/ArtRequest";
 import { ArtRequestForm } from "@/models/ArtRequestForm";
 import { ArtResponse } from "@/models/ArtResponse";
 import { dummyImages } from "@/app/results/dummyImages";
+import { nextErrorReturner } from "@/utils/errorReturner";
 
 interface ProcessBulk {
     artRequest: ArtRequest,
@@ -17,11 +19,11 @@ interface ProcessBulk {
 export async function POST(request: Request) {
     try {
         const { artRequest, bulkAmount }: ProcessBulk = await request.json();
-
-        if (!artRequest) return NextResponse.json({ error: "Request form is required." }, { status: 400 });
-        if (!artRequest.uid) return NextResponse.json({ error: "Prompt uid is required." }, { status: 403 });
-        if (!artRequest.model) return NextResponse.json({ error: "Prompt model is required." }, { status: 403 });
-        if (!artRequest.prompt) return NextResponse.json({ error: "Prompt text is required." }, { status: 403 });
+        
+        if (!artRequest) throw createHttpError(400, "Request form is required.", { headers: { from: "process_bulk", key: "required" } });
+        if (!artRequest.uid) throw createHttpError(403, "Prompt uid is required.", { headers: { from: "process_bulk", key: "required" } });
+        if (!artRequest.model) throw createHttpError(403, "Prompt model is required.", { headers: { from: "process_bulk", key: "required" } });
+        if (!artRequest.prompt) throw createHttpError(403, "Prompt text is required.", { headers: { from: "process_bulk", key: "required" } });
 
         let imageData;
 
@@ -31,9 +33,11 @@ export async function POST(request: Request) {
 
             // Send requests in parallel.
             const limit = pLimit(1); // Disable for parallel production.
-            const requests = artRequests.map((artRequest: ArtRequest) =>
-                limit(() => axios.post("https://api.artaistapp.com/generate/v2", artRequest))
-            );
+            const requests = artRequests.map((artRequest: ArtRequest) => (
+                limit
+                ? limit(() => axios.post("https://api.artaistapp.com/generate/v2", artRequest))
+                : axios.post("https://api.artaistapp.com/generate/v2", artRequest)
+            ));
 
             const imageResponses = await Promise.all(requests);
 
@@ -65,7 +69,7 @@ export async function POST(request: Request) {
             await new Promise(resolve => setTimeout(resolve, 200)); 
             return NextResponse.json([dummyImages[0]]);
         }
-    } catch (error) {
-        return NextResponse.json(error);
+    } catch (error: any) {
+        return nextErrorReturner(error);
     }
 }
