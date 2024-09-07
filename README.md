@@ -10,6 +10,7 @@ This project was built using these technologies:
 - **Radix-UI** (for accessible and customizable UI components)
 - **SASS** (for custom styling)
 
+
 ### ✨ FEATURES
 
 - **TypeScript Interfaces**: Defined TypeScript interface models to ensure type-safe requests.
@@ -21,6 +22,12 @@ This project was built using these technologies:
 - **Middleware Implementations**:
   - **API Route Protection**: Middleware that denies access to blacklisted API routes.
   - **Results Page Check**: Middleware that checks if the results page has data, and redirects to the homepage if none exists.
+
+
+### 🖼️ GENERATION PROCESS
+
+On the main page, users can submit a form to initiate an image generation request. Upon submission, the form data is managed using **React Context**, ensuring that it is accessible throughout the application. This centralized data management allows the `/results` page to retrieve the form data and send a request to the API for fetching the generated images.
+
 
 ### 📡 API DOCUMENTATION
 
