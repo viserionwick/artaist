@@ -31,4 +31,36 @@
     margin: 8px 0 20px 0;
     height: 40px;
   }
+
+  &.loading {
+    cursor: progress;
+    background: linear-gradient(
+      45deg,
+      var(--color1),
+      var(--color2),
+      var(--color3)
+    );
+    background-size: 200% 200%;
+    animation: mainButtonLoading 700ms alternate infinite;
+    @keyframes mainButtonLoading {
+      0% {
+        --color1: #ba92ef;
+        --color2: #7562d8;
+        --color3: #67d1fc;
+        background-position: 0% 50%;
+      }
+      50% {
+        --color1: #09ff00;
+        --color2: #7562d8;
+        --color3: #67d1fc;
+        background-position: 100% 50%;
+      }
+      100% {
+        --color1: #ba92ef;
+        --color2: #7562d8;
+        --color3: #67d1fc;
+        background-position: 0% 50%;
+      }
+    }
+  }
 }

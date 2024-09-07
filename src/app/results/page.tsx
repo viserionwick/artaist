@@ -18,10 +18,9 @@ import errorReturner from "@/utils/errorReturner";
 // Components: UI
 import Button from "../(components)/ui/Button/Button";
 
-/* import { dummyImages } from "./dummyImages"; */
-
 const Results: NextPage = () => {
     const { artRequestForm } = useResultsContext();
+    const [loading, setLoading] = useState<boolean>(false);
     const [images, setImages] = useState<ArtResponse[]>([]);
     const [imageSelected, setImageSelected] = useState<any>();
     const router = useRouter();
@@ -46,6 +45,7 @@ const Results: NextPage = () => {
 
         // Populate the images state with prompt results.
         try {
+            setLoading(true);
 
             // Set the loading state for images.
             let newImages = images;
@@ -75,7 +75,6 @@ const Results: NextPage = () => {
                     if (artRequestForm.production === "queue") {
                         const response = await axios.post("/api/processQueue", { artRequest });
                         const responseData: ArtResponse = response.data;
-                        // console.log(responseData); 
 
                         // Set images in order.
                         responseData && setImages(prevImages => {
@@ -110,6 +109,8 @@ const Results: NextPage = () => {
                     }
                 }
             }
+
+            setLoading(false);
         } catch (originalError) {
             const error = errorReturner(originalError);
             console.error("Something went wrong:", error);
@@ -122,20 +123,19 @@ const Results: NextPage = () => {
                     images.length && (
                         <div className="p-Results__images">
                             {
-                                images.map((image: any, index: any) => (
+                                images.map((image, index) => (
                                     image.loading ?
                                         <div key={index} className="p-Results__image loading" />
                                         :
                                         <div key={index} className="p-Results__image"
                                             onClick={() => setImageSelected(image)}>
-                                            <img src={`data:image/jpeg;base64,${image.b64}`} />
+                                            <img src={`data:image/jpeg;base64,${image.b64}`} alt={`art_${index + 1}`} />
                                         </div>
                                 ))
                             }
                         </div>
                     )
                 }
-
                 <div className="p-Results__details">
                     <div className="wrapper">
                         <h1 className="headline">Prompt</h1>
@@ -146,13 +146,26 @@ const Results: NextPage = () => {
                     <div className="wrapper">
                         <h1 className="headline">Style</h1>
                         <div className="text">
-                            {imageSelected?.style}
+                            {
+                                imageSelected?.style
+                                    ? imageSelected?.style
+                                    : <>-</>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-
-            <Button onClick={() => (router.push("/"))} className="main">Close</Button>
+            <Button
+                type="submit"
+                className={`main ${loading ? "loading" : ""}`}
+                disabled={loading}
+                onClick={() => (router.push("/"))}>
+                {
+                    loading
+                        ? <>•••</>
+                        : <>Close</>
+                }
+            </Button>
         </div>
     )
 }

@@ -12,7 +12,7 @@ import { ArtResponse } from "@/models/ArtResponse";
 // Utils
 import { nextErrorReturner } from "@/utils/errorReturner";
 import { publicEnv } from "@/utils/envValidate";
-import { dummyImages } from "@/app/results/dummyImages";
+/* import { dummyImages } from "@/app/results/dummyImages"; */
 
 type ProcessBulkData = {
     artRequest: ArtRequest,
@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
         let imageData;
 
         if (bulkAmount > 1) { // Bulk request.
-            /* const artRequests = Array(bulkAmount).fill(artRequest);
+            const artRequests = Array(bulkAmount).fill(artRequest);
             let artResponses: ArtResponse[] = [];
 
             // Send requests in parallel.
@@ -51,21 +51,24 @@ export const POST = async (req: Request) => {
                 ]
             });
 
-            return NextResponse.json(artResponses); */
+            return NextResponse.json(artResponses);
 
-            await new Promise(resolve => setTimeout(resolve, 200));
-            return NextResponse.json(Array(bulkAmount).fill(dummyImages[0]));
+            // For dummy testing.
+            /* await new Promise(resolve => setTimeout(resolve, 10000));
+            return NextResponse.json(Array(bulkAmount).fill(dummyImages[0])); */
         } else { // Single request.
-            /* const response = await axios.post(publicEnv.ARTAIST_API, artRequest);
+            const response = await axios.post(publicEnv.ARTAIST_API, artRequest);
 
             imageData = {
                 ...response.data,
                 style: artRequest.style
             };
 
-            return NextResponse.json([imageData]); */
-            await new Promise(resolve => setTimeout(resolve, 200));
-            return NextResponse.json([dummyImages[0]]);
+            return NextResponse.json([imageData]);
+
+            // For dummy testing.
+            /* await new Promise(resolve => setTimeout(resolve, 200));
+            return NextResponse.json([dummyImages[0]]); */
         }
     } catch (error: any) {
         return nextErrorReturner(error);

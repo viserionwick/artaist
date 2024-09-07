@@ -14,9 +14,8 @@ const useArtRequestForm: UseArtRequestForm = () => {
     const [formData, setFormData] = useState<ArtRequestForm>(artRequestFormDefault);
 
     const handleChange = (e: any, promptIndex: number = 0) => {
-        let { name, value } = e.target;
-        console.log(name, value);
-        
+        let { name } = e.target;
+        const { value } = e.target;
         /* const promptInputRegex = /^[A-Za-z\s]+$/; */ // Enables letters only input.
 
         if (name.startsWith("prompt")) {

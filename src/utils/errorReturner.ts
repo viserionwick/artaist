@@ -22,7 +22,6 @@ export const nextErrorReturner = (error: ErrorReturn): NextResponse => {
         error: error.message,
         headers: error.headers
     }
-
     if (!error.headers) { // Axios Error
         errorBody = {
             error: error.response?.data.error || "Unknown error.",
@@ -32,7 +31,6 @@ export const nextErrorReturner = (error: ErrorReturn): NextResponse => {
             }
         }
     }
-
     return NextResponse.json(errorBody, { status: error.status! })
 }
 

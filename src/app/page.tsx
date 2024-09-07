@@ -1,7 +1,7 @@
 "use client"
 
 // Essentials
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 
@@ -27,6 +27,7 @@ import Image from "next/image";
 const Home: NextPage = () => {
   const { formData, setFormData, handleChange } = useArtRequestForm();
   const { setArtRequestForm } = useResultsContext();
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   // Default the states on navigation.
@@ -54,16 +55,15 @@ const Home: NextPage = () => {
   // Handle submission.
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setLoading(true);
     setArtRequestForm(formData);
-
+    
     // Set cookie for access to results page.
     const formDataString = JSON.stringify(formData);
     document.cookie = `artRequestForm=${encodeURIComponent(formDataString)}; path=/`;
-
+    
     router.push("/results");
-
-    console.log("formData: ", formData);
-
+    setLoading(false);
   };
 
   return (
@@ -83,7 +83,6 @@ const Home: NextPage = () => {
             </RadioButton>
           </RadioButtons>
         </div>
-
         <div className="p-Home__formSection">
           <h5 className="p-Home__headline">Production Type</h5>
           <RadioButtons name="production" defaultValue="bulk" onChange={handleChange}>
@@ -95,8 +94,6 @@ const Home: NextPage = () => {
             </RadioButton>
           </RadioButtons>
         </div>
-
-
         <div className="p-Home__formSection">
           {
             formData.production === "bulk" && <>
@@ -118,7 +115,6 @@ const Home: NextPage = () => {
             </>
           }
         </div>
-
         <div className="p-Home__formSection">
           <h5 className="p-Home__headline">Prompt Area</h5>
           <div className="p-Home__promptSets">
@@ -139,7 +135,6 @@ const Home: NextPage = () => {
                     value={prompt.style}
                     onChange={(e) => handleChange(e, promptIndex)}
                   />
-
                   {
                     promptIndex !== 0 &&
                     <Button name="deletePrompt" className="remove" onClick={(e) => handleChange(e, promptIndex)}>
@@ -150,16 +145,18 @@ const Home: NextPage = () => {
               ))
             }
           </div>
-
           {
             formData.production === "queue" &&
             <Button onClick={addNewPromptSet} className="add">+Add Prompt to Queue</Button>
           }
         </div>
-
-
-
-        <Button type="submit" className="main">Generate</Button>
+        <Button type="submit" className={`main ${loading ? "loading" : ""}`} disabled={loading}>
+          {
+            loading
+              ? <>•••</>
+              : <>Generate</>
+          }
+        </Button>
       </Form.Root>
     </div>
   )

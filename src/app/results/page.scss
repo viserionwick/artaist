@@ -24,10 +24,10 @@
 
       &.loading {
         background: #353440;
-        animation: loadingBackground 700ms alternate infinite;
+        animation: imageLoading 700ms alternate infinite;
       }
 
-      @keyframes loadingBackground {
+      @keyframes imageLoading {
         0% {
           background-color: #353440;
         }
