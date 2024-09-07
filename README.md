@@ -62,7 +62,7 @@ const requests = artRequests.map((artRequest: ArtRequest) =>
 
 #### 2. **processQueue**
 
-The "processQueue" API handles one art request at a time, allowing individual images to be generated in order. It accepts a JSON payload with an art request and the image to generate.
+The "processQueue" API handles one art request at a time, allowing individual images to be generated in order. It accepts a JSON payload with an art request for the image to be generated.
 
 Upon receiving each art response, the `images` state is updated with the new data. The `responseData` is used to populate the state as follows:
 
