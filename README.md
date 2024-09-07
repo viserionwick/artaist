@@ -93,7 +93,7 @@ To get this project up and running on your local machine, follow these steps:
    - **Git** – [Download Git](https://git-scm.com/)
 
 2. **Clone the Repository**:
-   Open your terminal or command prompt and run the following command to clone the repository to the folder thatyou're currently in:
+   Open your terminal or command prompt and run the following command to clone the repository to the folder that you're currently in:
    ```bash
    git clone https://github.com/viserionwick/artaist.git
    ```
