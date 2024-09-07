@@ -88,6 +88,6 @@ responseData && setImages(prevImages => {
 
 ## 📝 NOTES
 - **Vercel.com**, the hosting service for this project, imposes a maximum execution time of 60 seconds for Serverless Functions. If a request exceeds this time limit, it may not complete or be processed successfully.
-- The **Artaist** API does not return the style string associated with the request. However, I have ensured that the style is displayed by referencing the original request.
+- The **Artaist** API does not return the `style` string associated with the request. However, I have ensured that the style is displayed by referencing the original request.
 - The process of changing the stack from **ViteJS** to **NextJS** required significant time and effort, which delayed the project’s completion. If not for this change, the project could have been delivered a day earlier.
 - **Form UI Issue:** When a prompt set is deleted, any warning associated with the deleted prompt may be inherited by newly added prompts if they occupy the same index. This issue is likely due to **Radix-UI** not revalidating the form after the deletion.
