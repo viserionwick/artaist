@@ -11,4 +11,12 @@
   padding: 12px 20px;
   box-sizing: border-box;
   border: 0;
+
+  &.FormMessage {
+    border-radius: 12px;
+    display: table-cell;
+    height: 10px !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }

@@ -8,8 +8,11 @@ import pLimit from "p-limit";
 import { ArtRequest } from "@/models/ArtRequest";
 import { ArtRequestForm } from "@/models/ArtRequestForm";
 import { ArtResponse } from "@/models/ArtResponse";
-import { dummyImages } from "@/app/results/dummyImages";
+
+// Utils
 import { nextErrorReturner } from "@/utils/errorReturner";
+import { publicEnv } from "@/utils/envValidate";
+import { dummyImages } from "@/app/results/dummyImages";
 
 type ProcessBulkData = {
     artRequest: ArtRequest,
@@ -32,7 +35,7 @@ export const POST = async (req: Request) => {
             // Send requests in parallel.
             const limit = pLimit(1); // Disable for parallel production.
             const requests = artRequests.map((artRequest: ArtRequest) => (
-                limit(() => axios.post("https://api.artaistapp.com/generate/v2", artRequest))
+                limit(() => axios.post(publicEnv.ARTAIST_API, artRequest))
             ));
 
             const imageResponses = await Promise.all(requests);
@@ -53,14 +56,13 @@ export const POST = async (req: Request) => {
             await new Promise(resolve => setTimeout(resolve, 200));
             return NextResponse.json(Array(bulkAmount).fill(dummyImages[0]));
         } else { // Single request.
-            /* const response = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
+            /* const response = await axios.post(publicEnv.ARTAIST_API, artRequest);
 
             imageData = {
                 ...response.data,
                 style: artRequest.style
             };
 
-            console.log("SINGLE WHATDA HEEELL: ", imageData); 
             return NextResponse.json([imageData]); */
             await new Promise(resolve => setTimeout(resolve, 200));
             return NextResponse.json([dummyImages[0]]);

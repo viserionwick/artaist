@@ -7,7 +7,10 @@ import { dummyImages } from "../../results/dummyImages";
 // Models
 import { ArtRequest } from "@/models/ArtRequest";
 import { ArtResponse } from "@/models/ArtResponse";
+
+// Utils
 import { nextErrorReturner } from "@/utils/errorReturner";
+import { publicEnv } from "@/utils/envValidate";
 
 export const POST = async (req: Request) => {
     try {
@@ -16,7 +19,7 @@ export const POST = async (req: Request) => {
         if (!artRequest) throw createHttpError(400, "Request form is required.", { headers: { from: "process_queue", key: "required" } });
         if (!artRequest.uid || !artRequest.model || !artRequest.prompt) throw createHttpError(403, "Prompt params ('uid', 'model', 'prompt') is required.", { headers: { from: "process_queue", key: "required" } });
 
-        /* const imageResponse = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
+        /* const imageResponse = await axios.post(publicEnv.ARTAIST_API, artRequest);
         const imageData: ArtResponse = imageResponse.data; */
         await new Promise(resolve => setTimeout(resolve, 200));
         const imageData = dummyImages[0];

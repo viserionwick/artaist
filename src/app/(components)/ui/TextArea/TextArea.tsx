@@ -15,7 +15,7 @@ const TextArea: React.FC<TextAreaProps> = ({ className, name, required, placehol
         <Form.Field className="FormField" name={name} onChange={onChange}>
             {
                 valueMissing && <>
-                    <Form.Message className="FormMessage" match="valueMissing">
+                    <Form.Message className="Textarea FormMessage" match="valueMissing">
                         {valueMissing}
                     </Form.Message>
                 </>
