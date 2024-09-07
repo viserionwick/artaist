@@ -40,9 +40,8 @@ This response is from the Artaist's API when `await Promise.all(requests)` is us
 
 ```typescript
 const limit = pLimit(1); // Disable for parallel production.
-const requests = artRequests.map(
-  (artRequest: ArtRequest) =>
+const requests = artRequests.map((artRequest: ArtRequest) =>
     limit(() => axios.post(publicEnv.ARTAIST_API!, artRequest)) // Delete this.
-  // axios.post(publicEnv.ARTAIST_API!, artRequest) // Add this.
+    // axios.post(publicEnv.ARTAIST_API!, artRequest) // Add this.
 );
 ```
