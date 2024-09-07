@@ -28,7 +28,7 @@ This project was built using these technologies:
 
 The "processBulk" API handles bulk art requests, allowing multiple images to be generated in one go. It accepts a JSON payload with an art request and the bulk amount of images to generate.
 
-##### IMPORTANT NOTE:
+##### IMPORTANT NOTE FOR PARALLEL PROCESSING:
 
 ```json
 {
@@ -36,7 +36,7 @@ The "processBulk" API handles bulk art requests, allowing multiple images to be 
 }
 ```
 
-Parallel processing is restricted due to the Artaist API's limitation on handling concurrent requests. However, a rate limiter has been implemented to facilitate sequential processing. If you wish to enable concurrent requests, you can adjust or remove this limiter as needed.
+This response is from the Artaist's API when `await Promise.all(requests)` is used for parallel processing. It is restricted due to the Artaist API's limitation on handling concurrent requests. However, a rate limiter has been implemented to facilitate sequential processing. If you wish to enable concurrent requests, you can adjust or remove this limiter as needed.
 
 ```typescript
 const limit = pLimit(1); // Disable for parallel production.
