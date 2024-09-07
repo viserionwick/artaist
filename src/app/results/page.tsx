@@ -1,6 +1,7 @@
 "use client"
 
 // Essentials
+import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -15,7 +16,7 @@ import { ArtResponse } from "../../models/ArtResponse";
 
 import { dummyImages } from "./dummyImages";
 
-const Results: React.FC = () => {
+const Results: NextPage = () => {
     const { artRequestForm } = useResultsContext();
     const [images, setImages] = useState<ArtResponse[]>([]);
 
@@ -120,7 +121,7 @@ const Results: React.FC = () => {
                 images.map((image, imageIndex) => (
                     image.loading
                         ? <div key={imageIndex}>loading {imageIndex}</div>
-                        : <div key={imageIndex}>{image.prompt} | <img src={`data:image/jpeg;base64,${image.b64}`} /> | {imageIndex}</div>
+                        : <div key={imageIndex}>{image.prompt} | {image.id} {/* <img src={`data:image/jpeg;base64,${image.b64}`} /> */} | {imageIndex}</div>
 
                 ))
             }

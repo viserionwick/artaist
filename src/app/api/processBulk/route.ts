@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         let imageData;
 
         if (bulkAmount > 1) { // Bulk request.
-            const artRequests = Array(bulkAmount).fill(artRequest);
+            /* const artRequests = Array(bulkAmount).fill(artRequest);
             let artResponses: ArtResponse[] = [];
 
             // Send requests in parallel.
@@ -48,9 +48,12 @@ export async function POST(request: Request) {
                 ]
             });
 
-            return NextResponse.json(artResponses);
+            return NextResponse.json(artResponses); */
+
+            await new Promise(resolve => setTimeout(resolve, 200)); 
+            return NextResponse.json(dummyImages);
         } else { // Single request.
-            const response = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
+            /* const response = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
 
             imageData = {
                 ...response.data,
@@ -58,9 +61,9 @@ export async function POST(request: Request) {
             };
 
             console.log("SINGLE WHATDA HEEELL: ", imageData); 
-            return NextResponse.json([imageData]);
-            /* await new Promise(resolve => setTimeout(resolve, 300)); 
-            return NextResponse.json([dummyImages[0]]); */
+            return NextResponse.json([imageData]); */
+            await new Promise(resolve => setTimeout(resolve, 200)); 
+            return NextResponse.json([dummyImages[0]]);
         }
     } catch (error) {
         return NextResponse.json(error);

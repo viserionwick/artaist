@@ -2,7 +2,8 @@
 
 // Essentials
 import { useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import { NextPage } from "next";
+import { useRouter } from "next/navigation";
 /* import { useLocation, useNavigate } from "react-router-dom"; */
 
 // Contexts
@@ -16,10 +17,14 @@ import { artRequestFormDefault } from "../models/ArtRequestForm";
 
 // Components: UI
 import * as Form from "@radix-ui/react-form";
-import * as RadioGroup from "@radix-ui/react-radio-group";
-import * as Slider from "@radix-ui/react-slider";
+import RadioButtons from "./(components)/ui/Radio/RadioButtons";
+import RadioButton from "./(components)/ui/Radio/RadioButton";
+import Slider from "./(components)/ui/Slider";
+import TextArea from "./(components)/ui/TextArea";
+import TextField from "./(components)/ui/TextField";
+import Button from "./(components)/ui/Button";
 
-const Home: React.FC = () => {
+const Home: NextPage = () => {
   const { formData, setFormData, handleChange } = useArtRequestForm();
   const { setArtRequestForm } = useResultsContext();
   const router = useRouter();
@@ -58,69 +63,46 @@ const Home: React.FC = () => {
     router.push("/results");
 
     console.log("formData: ", formData);
-    
+
   };
 
   return (
     <div className="p-Home">
       <Form.Root onSubmit={handleSubmit}>
         <h5>AI Model</h5>
-        <Form.Field name="model" onChange={handleChange}>
-          <RadioGroup.Root className="RadioGroupRoot" name="model" defaultValue="zappy">
-            <div>
-              <RadioGroup.Item className="RadioGroupItem" value="zappy" id="model_zappy">
-                <RadioGroup.Indicator className="RadioGroupIndicator" />
-                <label htmlFor="model_zappy">Zappy</label>
-              </RadioGroup.Item>
-            </div>
-            <div>
-              <RadioGroup.Item className="RadioGroupItem" value="masterpiece" id="model_masterpiece">
-                <RadioGroup.Indicator className="RadioGroupIndicator" />
-                <label htmlFor="model_masterpiece">Masterpiece</label>
-              </RadioGroup.Item>
-            </div>
-          </RadioGroup.Root>
-        </Form.Field>
+        <RadioButtons name="model" defaultValue="zappy" onChange={handleChange}>
+          <RadioButton value="zappy" id="model_zappy">
+            Zappy
+          </RadioButton>
+          <RadioButton value="masterpiece" id="model_masterpiece">
+            Masterpiece
+          </RadioButton>
+        </RadioButtons>
 
         <h5>Production Type</h5>
-        <Form.Field name="production" onChange={handleChange}>
-          <RadioGroup.Root className="RadioGroupRoot" name="production" defaultValue="bulk">
-            <div>
-              <RadioGroup.Item className="RadioGroupItem" value="bulk" id="production_bulk">
-                <RadioGroup.Indicator className="RadioGroupIndicator" />
-                <label htmlFor="production_bulk">Bulk Generation</label>
-              </RadioGroup.Item>
-            </div>
-            <div>
-              <RadioGroup.Item className="RadioGroupItem" value="queue" id="production_queue">
-                <RadioGroup.Indicator className="RadioGroupIndicator" />
-                <label htmlFor="production_queue">Queue Generation</label>
-              </RadioGroup.Item>
-            </div>
-          </RadioGroup.Root>
-        </Form.Field>
+        <RadioButtons name="production" defaultValue="bulk" onChange={handleChange}>
+          <RadioButton value="bulk" id="production_bulk">
+            Bulk Generation
+          </RadioButton>
+          <RadioButton value="queue" id="production_queue">
+            Queue Generation
+          </RadioButton>
+        </RadioButtons>
 
         {
           formData.production === "bulk" && <>
             <h5>Number of Production</h5>
-            <Form.Field name="bulkAmount" onChange={handleChange}>
-              <Slider.Root
-                className="SliderRoot"
-                name="bulkAmount"
-                defaultValue={[artRequestFormDefault.bulkAmount]}
-                min={0}
-                max={8}
-                step={2}
-              >
-                <Slider.Track className="SliderTrack">
-                  <Slider.Range className="SliderRange" />
-                </Slider.Track>
-                <Slider.Thumb className="SliderThumb" aria-label="Volume" />
-              </Slider.Root>
-              <div>
-                1 | 5 | 10
-              </div>
-            </Form.Field>
+            <Slider
+              name="bulkAmount"
+              onChange={handleChange}
+              defaultValue={[artRequestFormDefault.bulkAmount]}
+              min={0}
+              max={10}
+              step={5}
+            />
+            <div>
+              1 | 5 | 10
+            </div>
           </>
         }
 
@@ -131,32 +113,25 @@ const Home: React.FC = () => {
               <div key={promptIndex}>
                 {
                   promptIndex !== 0 &&
-                  <button type="button" name="deletePrompt" onClick={(e) => handleChange(e, promptIndex)}>delete</button>
+                  <Button name="deletePrompt" onClick={(e) => handleChange(e, promptIndex)}>
+                    Delete
+                  </Button>
                 }
-                <Form.Field className="FormField" name={`prompt-${promptIndex}`} onChange={(e) => handleChange(e, promptIndex)}>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter a prompt.
-                  </Form.Message>
-                  <br />
-                  <Form.Control asChild>
-                    <textarea
-                      required
-                      value={prompt.prompt}
-                      className="Textarea"
-                      placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field className="FormField" name={`style-${promptIndex}`} onChange={(e) => handleChange(e, promptIndex)}>
-                  <Form.Control asChild>
-                    <input
-                      type="text"
-                      value={prompt.style}
-                      className="Input"
-                      placeholder="Style (Optional)"
-                    />
-                  </Form.Control>
-                </Form.Field>
+
+                <TextArea
+                  name={`prompt-${promptIndex}`}
+                  required
+                  placeholder="A cute rabbit, white background, pastel hues, minimal illustration, line art, pen drawing"
+                  valueMissing="Please enter a prompt."
+                  value={prompt.prompt}
+                  onChange={(e) => handleChange(e, promptIndex)}
+                />
+                <TextField
+                  name={`style-${promptIndex}`}
+                  placeholder="Style (Optional)"
+                  value={prompt.style}
+                  onChange={(e) => handleChange(e, promptIndex)}
+                />
               </div>
             ))
           }
@@ -165,7 +140,7 @@ const Home: React.FC = () => {
 
         {
           formData.production === "queue" &&
-          <button type="button" onClick={addNewPromptSet}>+Add Prompt to Queue</button>
+          <Button onClick={addNewPromptSet}>+Add Prompt to Queue</Button>
         }
         <Form.Submit>
           Submit
