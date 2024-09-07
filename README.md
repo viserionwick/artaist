@@ -84,10 +84,52 @@ responseData && setImages(prevImages => {
 });
 ```
 
+### 🚀 HOW TO RUN THIS PROJECT ON YOUR COMPUTER
+To get this project up and running on your local machine, follow these steps:
+
+#### 1. **Clone the Repository:**
+Open your terminal or command prompt and run the following command to clone the repository:
+1. **Prerequisites**:
+   Ensure you have the following installed on your computer:
+   - **Node.js** (version 14.x or later) – [Download Node.js](https://nodejs.org/)
+   - **Git** – [Download Git](https://git-scm.com/)
+
+2. **Clone the Repository**:
+   Open your terminal or command prompt and run the following command to clone the repository to the folder thatyou're currently in:
+   ```bash
+   git clone https://github.com/viserionwick/artaist.git
+   ```
+3. **Navigate to the Project Directory:** Change to the project directory using:
+   ```bash
+   cd your-repository
+   ```
+4. **Install Dependencies:** Install the required dependencies using your preferred package manager:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+5. **Set Up Environment Variables:** Create a `.env.local` file in the root directory and add the necessary environment variables:
+   ```bash
+   NEXT_PUBLIC_CORS_WHITELIST=http://localhost:3000
+   NEXT_PUBLIC_UID=***
+   NEXT_PUBLIC_ARTAIST_API=https://api.artaistapp.com/generate/v2
+   ```
+6. **Run the Development Server:** Start the development server with:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+7. **Open the Application:** Once the server is running, open your web browser and go to: [http://localhost:3000](http://localhost:3000)
 
 
 ## 📝 NOTES
 - **Vercel.com**, the hosting service for this project, imposes a maximum execution time of 60 seconds for Serverless Functions. If a request exceeds this time limit, it may not complete or be processed successfully.
 - The **Artaist** API does not return the `style` string associated with the request. However, I have ensured that the style is displayed by referencing the original request.
-- The process of changing the stack from **ViteJS** to **NextJS** required significant time and effort, which delayed the project’s completion. If not for this change, the project could have been delivered a day earlier.
 - **Form UI Issue:** When a prompt set is deleted, any warning associated with the deleted prompt may be inherited by newly added prompts if they occupy the same index. This issue is likely due to **Radix-UI** not revalidating the form after the deletion.
+- The process of changing the stack from **ViteJS** to **NextJS** required significant time and effort, which delayed the project’s completion. If not for this change, the project could have been delivered a day earlier.
