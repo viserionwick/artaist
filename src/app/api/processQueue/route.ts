@@ -12,7 +12,7 @@ import { nextErrorReturner } from "@/utils/errorReturner";
 import { publicEnv } from "@/utils/envValidate";
 /* import { dummyImages } from "../../results/dummyImages"; */
 
-export const POST = async (req: Request) => {
+export async function POST(req: Request) {
     try {
         const { artRequest }: { artRequest: ArtRequest } = await req.json();
 

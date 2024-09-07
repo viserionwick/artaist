@@ -19,7 +19,7 @@ type ProcessBulkData = {
     bulkAmount: ArtRequestForm["bulkAmount"]
 }
 
-export const POST = async (req: Request) => {
+export async function POST(req: Request) {
     try {
         const { artRequest, bulkAmount }: ProcessBulkData = await req.json();
 
