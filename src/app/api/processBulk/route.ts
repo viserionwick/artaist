@@ -16,10 +16,10 @@ interface ProcessBulk {
     bulkAmount: ArtRequestForm["bulkAmount"]
 }
 
-export async function POST(request: Request) {
+export const POST = async (req: Request) => {
     try {
-        const { artRequest, bulkAmount }: ProcessBulk = await request.json();
-        
+        const { artRequest, bulkAmount }: ProcessBulk = await req.json();
+
         if (!artRequest) throw createHttpError(400, "Request form is required.", { headers: { from: "process_bulk", key: "required" } });
         if (!artRequest.uid) throw createHttpError(403, "Prompt uid is required.", { headers: { from: "process_bulk", key: "required" } });
         if (!artRequest.model) throw createHttpError(403, "Prompt model is required.", { headers: { from: "process_bulk", key: "required" } });
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
             return NextResponse.json(artResponses); */
 
-            await new Promise(resolve => setTimeout(resolve, 200)); 
+            await new Promise(resolve => setTimeout(resolve, 200));
             return NextResponse.json(dummyImages);
         } else { // Single request.
             /* const response = await axios.post("https://api.artaistapp.com/generate/v2", artRequest);
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
 
             console.log("SINGLE WHATDA HEEELL: ", imageData); 
             return NextResponse.json([imageData]); */
-            await new Promise(resolve => setTimeout(resolve, 200)); 
+            await new Promise(resolve => setTimeout(resolve, 200));
             return NextResponse.json([dummyImages[0]]);
         }
     } catch (error: any) {
