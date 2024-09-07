@@ -87,8 +87,6 @@ responseData && setImages(prevImages => {
 ### 🚀 HOW TO RUN THIS PROJECT ON YOUR COMPUTER
 To get this project up and running on your local machine, follow these steps:
 
-#### 1. **Clone the Repository:**
-Open your terminal or command prompt and run the following command to clone the repository:
 1. **Prerequisites**:
    Ensure you have the following installed on your computer:
    - **Node.js** (version 14.x or later) – [Download Node.js](https://nodejs.org/)
