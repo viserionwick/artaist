@@ -15,7 +15,7 @@ const apiRouteCheck: Middleware = async (req: NextRequest) => {
     if (
         emptyRoutes.includes(pathname) // Checks non-route folders and blacklist routes.
         ||
-        !publicEnv.CORS_WHITELIST.includes(origin) // Checks CORS whitelist.
+        !publicEnv.CORS_WHITELIST!.includes(origin) // Checks CORS whitelist.
     )
         return error;
 };
