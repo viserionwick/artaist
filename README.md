@@ -1,4 +1,21 @@
-### 🧱 BUILT WITH
+# Artaist Image Generation Application
+
+A Next.js application for generating AI art images through the Artaist API, featuring queue and bulk processing modes, React Context state management, and type-safe form validation with Zod.
+
+---
+
+## Table of Contents
+
+- [Built With](#built-with)
+- [Features](#features)
+- [Generation Process](#generation-process)
+- [API Documentation](#api-documentation)
+- [Installation & Setup](#installation--setup)
+- [Notes](#notes)
+
+---
+
+## Built With
 
 This project was built using these technologies:
 
@@ -10,8 +27,9 @@ This project was built using these technologies:
 - **Radix-UI** (for accessible and customizable UI components)
 - **SASS** (for custom styling)
 
+---
 
-### ✨ FEATURES
+## Features
 
 - **TypeScript Interfaces**: Defined TypeScript interface models to ensure type-safe requests.
 - **Next.js App Folder**: Utilized Next.js app folder for efficient routing and page setup.
@@ -23,8 +41,9 @@ This project was built using these technologies:
   - **API Route Protection**: Middleware that denies access to blacklisted API routes.
   - **Results Page Check**: Middleware that checks if the results page has data, and redirects to the homepage if none exists.
 
+---
 
-### 🖼️ GENERATION PROCESS
+## Generation Process
 
 On the main page, users can submit a form to initiate an image generation request. Upon submission, the form data is managed using **React Context**, ensuring that it is accessible throughout the application. This centralized data management allows the `/results` page to retrieve the form data and send a request to the API for fetching the generated images.
 
@@ -35,14 +54,15 @@ Upon receiving the form data, the `processRequest(artRequestForm)` function is i
 
 This approach ensures that each production type is handled efficiently, optimizing the user experience accordingly.
 
+---
 
-### 📡 API DOCUMENTATION
+## API Documentation
 
-#### 1. **processBulk**
+### 1. processBulk
 
 The "processBulk" API handles bulk art requests, allowing multiple images to be generated in one go. It accepts a JSON payload with an art request and the bulk amount of images to generate.
 
-##### IMPORTANT NOTE FOR PARALLEL PROCESSING:
+#### Important Note for Parallel Processing
 
 ```json
 {
@@ -60,7 +80,7 @@ const requests = artRequests.map((artRequest: ArtRequest) =>
 );
 ```
 
-#### 2. **processQueue**
+### 2. processQueue
 
 The "processQueue" API handles one art request at a time, allowing individual images to be generated in order. It accepts a JSON payload with an art request for the image to be generated.
 
@@ -84,24 +104,37 @@ responseData && setImages(prevImages => {
 });
 ```
 
-### 🚀 HOW TO RUN THIS PROJECT ON YOUR COMPUTER
-To get this project up and running on your local machine, follow these steps:
+---
 
-1. **Prerequisites**:
-   Ensure you have the following installed on your computer:
-   - **Node.js** (version 14.x or later) – [Download Node.js](https://nodejs.org/)
-   - **Git** – [Download Git](https://git-scm.com/)
+## Installation & Setup
 
-2. **Clone the Repository**:
+### Prerequisites
+
+- **Node.js** (version 14.x or later) – [Download Node.js](https://nodejs.org/)
+- **Git** – [Download Git](https://git-scm.com/)
+
+### Installation Steps
+
+1. **Clone the Repository**:
+   
    Open your terminal or command prompt and run the following command to clone the repository to the folder that you're currently in:
+   
    ```bash
    git clone https://github.com/viserionwick/artaist.git
    ```
-3. **Navigate to the Project Directory:** Change to the project directory using:
+
+2. **Navigate to the Project Directory:**
+   
+   Change to the project directory using:
+   
    ```bash
    cd your-repository
    ```
-4. **Install Dependencies:** Install the required dependencies using your preferred package manager:
+
+3. **Install Dependencies:**
+   
+   Install the required dependencies using your preferred package manager:
+   
    ```bash
    npm install
    # or
@@ -109,13 +142,21 @@ To get this project up and running on your local machine, follow these steps:
    # or
    pnpm install
    ```
-5. **Set Up Environment Variables:** Create a `.env.local` file in the root directory and add the necessary environment variables:
+
+4. **Set Up Environment Variables:**
+   
+   Create a `.env.local` file in the root directory and add the necessary environment variables:
+   
    ```bash
    NEXT_PUBLIC_CORS_WHITELIST=http://localhost:3000
    NEXT_PUBLIC_UID=***
    NEXT_PUBLIC_ARTAIST_API=https://api.artaistapp.com/generate/v2
    ```
-6. **Run the Development Server:** Start the development server with:
+
+5. **Run the Development Server:**
+   
+   Start the development server with:
+   
    ```bash
    npm run dev
    # or
@@ -123,12 +164,17 @@ To get this project up and running on your local machine, follow these steps:
    # or
    pnpm dev
    ```
-7. **Open the Application:** Once the server is running, open your web browser and go to: [http://localhost:3000](http://localhost:3000)
 
+6. **Open the Application:**
+   
+   Once the server is running, open your web browser and go to: [http://localhost:3000](http://localhost:3000)
 
-## 📝 NOTES
-- **Ad Blockers:** If you are using ad blockers it might cause for the API calls to mulfunction. Turn it off for the time being.
+---
+
+## Notes
+
+- **Ad Blockers:** If you are using ad blockers it might cause for the API calls to malfunction. Turn it off for the time being.
 - **Vercel.com**, the hosting service for this project, imposes a maximum execution time of **60 seconds** for Serverless Functions. If a request exceeds this time limit, it may not complete or be processed successfully.
 - The **Artaist** API does not return the `style` string associated with the request. However, I have ensured that the style is displayed by referencing the original request.
 - **Form UI Issue:** When a prompt set is deleted, any warning associated with the deleted prompt may be inherited by newly added prompts if they occupy the same index. This issue is likely due to **Radix-UI** not revalidating the form after the deletion.
-- The process of changing the stack from **ViteJS** to **NextJS** required significant time and effort, which delayed the project’s completion. If not for this change, the project could have been delivered a day earlier.
+- The process of changing the stack from **ViteJS** to **NextJS** required significant time and effort, which delayed the project's completion. If not for this change, the project could have been delivered a day earlier.
